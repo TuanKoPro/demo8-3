@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi Người Yêu Anh - 8/3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            overflow: hidden; font-family: 'Arial', sans-serif;
+            background-color: #0b132b;
+        }
+
+        /* 1. MÀN HÌNH CHỜ (TÍM) */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #ce93d8 0%, #ab47bc 100%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 1000; transition: opacity 1.2s ease-in-out;
+        }
+
+        .avatar-circle {
+            width: 140px; height: 140px; background: white; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        .btn-open {
+            padding: 15px 40px; background: rgba(255, 255, 255, 0.2); color: white;
+            border: 2px solid white; border-radius: 50px; font-size: 1.2rem;
+            cursor: pointer; backdrop-filter: blur(5px); transition: 0.3s;
+        }
+        .btn-open:hover { background: white; color: #ab47bc; }
+
+        /* 2. HIỆU ỨNG PHÁO HOA TRÁI TIM */
+        #canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 999; }
+
+        /* 3. NỘI DUNG CHÍNH (NỀN TRỜI SAO) */
+        #main-content {
+            width: 100%; height: 100vh;
+            background: #0b132b url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            display: none; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 2s ease-in-out;
+        }
+
+        /* KHUNG BỨC THƯ */
+        .letter-bg {
+            width: 90%; max-width: 550px; min-height: 400px;
+            background: #fff9f0; padding: 40px; border-radius: 15px;
+            position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            font-family: 'Dancing Script', cursive;
+            border: 8px solid #f8bbd0; transform: rotate(-1deg);
+            z-index: 100; will-change: transform;
+        }
+
+        .close-btn {
+            position: absolute; top: 10px; right: 15px;
+            background: #d81b60; color: white; border-radius: 50%;
+            width: 25px; height: 25px; text-align: center; line-height: 25px;
+            font-family: Arial; font-size: 12px; cursor: pointer;
+        }
+
+        #type-text {
+            font-size: 1.6rem; line-height: 1.4; color: #444;
+            white-space: pre-line; display: block;
+        }
+
+        .signature {
+            text-align: right; margin-top: 25px; font-weight: bold;
+            color: #d81b60; font-size: 1.8rem; opacity: 0; transition: 2s;
+        }
+
+        /* 4. VẬT THỂ BAY (ẢNH & TRÁI TIM) */
+        .floating { position: absolute; bottom: -150px; z-index: 1000; animation: fly var(--duration) linear forwards; }
+        .img-item { width: 120px; height: 120px; object-fit: cover; border-radius: 15px; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .heart-item { color: #ff4d6d; font-size: 30px; text-shadow: 0 0 5px rgba(255,77,109,0.5); }
+
+        @keyframes fly {
+            0% { transform: translateY(0) rotate(var(--rot)); left: var(--left); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(calc(var(--rot) + 60deg)); left: var(--left); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <div id="overlay">
+        <div class="avatar-circle">
+            <img src="https://cdn-icons-png.flaticon.com/512/3468/3468350.png" width="90" alt="Hoa">
+        </div>
+        <div style="color: white; font-size: 1.5rem; margin-bottom: 30px; font-style: italic;">Người đẹp có một bức thư mới...</div>
+        <button class="btn-open" onclick="openGift()">📩 Mở quà thôi!</button>
+    </div>
+
+    <div id="main-content">
+        <div class="letter-bg">
+            <div class="close-btn">X</div>
+            <div id="type-text"></div>
+            <div class="signature" id="signature">Anh yêu em ❤️</div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="noinaycoanh.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // --- CẤU HÌNH ---
+        const message = `Em thân yêu,
+
+Chúc em ngày 8/3 ngọt ngào như chính em vậy!
+
+Em là người khiến anh muốn trở nên tốt hơn mỗi ngày. Cảm ơn em đã tin tưởng, đã sát cánh và cho anh cảm giác được yêu thương.
+
+Mong em luôn giữ được nụ cười tươi, luôn mạnh mẽ và hạnh phúc. Anh sẽ cố gắng để em không phải thất vọng.
+
+Chúc em 8/3 vui vẻ!`;
+
+        const photos = ['test.jpg', 'test1.jpg', 'test2.jpg', 'test3.jpg','test4.jpg','test5.jpg']; // Thay bằng tên file ảnh của bạn
+        const hearts = ['❤️', '💖', '💗', '🌸', '✨'];
+
+        // --- XỬ LÝ MỞ QUÀ ---
+        function openGift() {
+            document.getElementById('bgMusic').play();
+            initFireworks(); // Chạy pháo hoa trái tim
+
+            const overlay = document.getElementById('overlay');
+            overlay.style.opacity = '0';
+            
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                const main = document.getElementById('main-content');
+                main.style.display = 'flex';
+                
+                setTimeout(() => {
+                    main.style.opacity = '1';
+                    // Đợi 0.8s sau khi hiện background mới gõ chữ cho mượt
+                    setTimeout(startTyping, 800);
+                }, 100);
+
+                // Sau 3 giây gõ chữ mới bắt đầu bay ảnh để CPU không bị lag
+                setTimeout(() => {
+                    setInterval(createFloating, 1000);
+                }, 3000);
+            }, 1000);
+        }
+
+        // --- HIỆU ỨNG GÕ CHỮ (TYPING) ---
+        // --- HIỆU ỨNG GÕ CHỮ (TYPING) ĐÃ SỬA LỖI TIẾNG VIỆT ---
+function startTyping() {
+    let i = 0;
+    const container = document.getElementById('type-text');
+
+    function type() {
+        if (i <= message.length) {
+            // Thay vì dùng charAt(i), ta dùng slice để lấy toàn bộ đoạn chữ từ đầu đến i
+            container.textContent = message.slice(0, i);
+            i++;
+            
+            let delay = 45; 
+            if (message.charAt(i-1) === ',') delay = 350;
+            if (message.charAt(i-1) === '.') delay = 600;
+            if (message.charAt(i-1) === '\n') delay = 500;
+
+            setTimeout(type, delay);
+        } else {
+            document.getElementById('signature').style.opacity = '1';
+        }
+    }
+    type();
+}
+
+        // --- HIỆU ỨNG PHÁO HOA TRÁI TIM ---
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function initFireworks() {
+            const particles = [];
+            for (let i = 0; i < 80; i++) {
+                particles.push({
+                    x: canvas.width / 2, y: canvas.height / 2,
+                    size: Math.random() * 15 + 10,
+                    velX: (Math.random() - 0.5) * 14,
+                    velY: (Math.random() - 0.5) * 14,
+                    opacity: 1
+                });
+            }
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach((p, i) => {
+                    p.x += p.velX; p.y += p.velY; p.opacity -= 0.015;
+                    ctx.font = p.size + 'px serif'; ctx.globalAlpha = p.opacity;
+                    ctx.fillText('❤️', p.x, p.y);
+                    if (p.opacity <= 0) particles.splice(i, 1);
+                });
+                if (particles.length > 0) requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // --- HIỆU ỨNG VẬT THỂ BAY ---
+        function createFloating() {
+            const isHeart = Math.random() < 0.4;
+            const el = document.createElement(isHeart ? 'div' : 'img');
+            el.className = 'floating ' + (isHeart ? 'heart-item' : 'img-item');
+            
+            if(isHeart) el.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            else el.src = photos[Math.floor(Math.random() * photos.length)];
+
+            const left = Math.random() * 95 + '%';
+            const duration = (Math.random() * 5 + 8) + 's';
+            const rot = (Math.random() * 60 - 30) + 'deg';
+
+            el.style.setProperty('--left', left);
+            el.style.setProperty('--duration', duration);
+            el.style.setProperty('--rot', rot);
+
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 12000);
+        }
+    </script>
+</body>
+</html>
