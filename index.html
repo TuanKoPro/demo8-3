@@ -7,42 +7,92 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&family=Caveat:wght@700&display=swap" rel="stylesheet">
     
     <style>
-        
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             overflow: hidden; font-family: 'Arial', sans-serif;
             background-color: #0b132b;
         }
         body{
-user-select:none;
-}
+            user-select:none;
+        }
         
-        /* 1. MÀN HÌNH CHỜ */
+        /* 1. MÀN HÌNH CHỜ (ĐÃ THAY ĐỔI) */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #ce93d8 0%, #ab47bc 100%);
+            background: rgba(0, 0, 0, 0.4); /* Nền tối mờ */
+            backdrop-filter: blur(8px); /* Làm mờ hậu cảnh */
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 1000; transition: opacity 1.2s ease-in-out;
+        }
+
+        .card {
+            position: relative;
+            background: white;
+            padding: 40px 50px;
+            border-radius: 40px;
+            text-align: center;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 20px 40px rgba(0,0,0,.3);
+            z-index: 5;
+            animation: cardAppear 0.8s ease-out;
+        }
+
+        @keyframes cardAppear {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .card:before {
+            content: "";
+            position: absolute;
+            inset: -10px;
+            border: 6px solid #ffd6e5;
+            border-radius: 45px;
+            pointer-events: none;
         }
 
         .avatar-circle {
             width: 140px; height: 140px; background: white; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            margin-bottom: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            margin: 0 auto 25px auto; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             animation: pulse 2s infinite; overflow: hidden;
+            border: 4px solid #f8bbd0;
         }
         .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-        .btn-open {
-            padding: 15px 40px; background: rgba(255, 255, 255, 0.2); color: white;
-            border: 2px solid white; border-radius: 50px; font-size: 1.2rem;
-            cursor: pointer; backdrop-filter: blur(5px); transition: 0.3s;
+        .title-card {
+            font-family: 'Dancing Script', cursive;
+            font-size: 26px;
+            color: #6d4c41;
+            margin-bottom: 25px;
+            font-weight: bold;
         }
-        .btn-open:hover { background: white; color: #ab47bc; }
 
-        /* 2. HIỆU ỨNG PHÁO HOA & NỀN */
+        .btn-open {
+            background: linear-gradient(45deg, #7b5cff, #b388ff);
+            border: none;
+            color: white;
+            padding: 14px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: .3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,.2);
+            font-weight: bold;
+        }
+        .btn-open:hover { transform: scale(1.1); box-shadow: 0 15px 25px rgba(123, 92, 255, 0.4); }
+
+        /* Sparkling effect */
+        .sparkle {
+            position: absolute; width: 4px; height: 4px; background: white;
+            border-radius: 50%; animation: sparkleAnim 3s infinite; pointer-events: none;
+        }
+        @keyframes sparkleAnim { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+
+        /* 2. HIỆU ỨNG PHÁO HOA & NỀN (GIỮ NGUYÊN) */
         #canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 999; }
 
         #main-content {
@@ -53,7 +103,7 @@ user-select:none;
             position: relative;
         }
 
-        /* 3. KHUNG BỨC THƯ */
+        /* 3. KHUNG BỨC THƯ (GIỮ NGUYÊN) */
         .letter-bg {
             width: 90%; max-width: 550px; min-height: 400px;
             background: #fff9f0; padding: 40px; border-radius: 15px;
@@ -111,7 +161,7 @@ user-select:none;
             color: #d81b60; font-size: 1.8rem; opacity: 0; transition: 2s;
         }
 
-        /* 4. MÀN HÌNH FINAL */
+        /* 4. MÀN HÌNH FINAL (GIỮ NGUYÊN) */
         #final-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             visibility: hidden; z-index: 100;
@@ -122,7 +172,7 @@ user-select:none;
         .sub-text {
             font-family: 'Caveat', cursive;
             font-size: 3.5rem;
-            color: #ff80ab; /* MÀU HỒNG */
+            color: #ff80ab;
             font-weight: 700;
             text-align: center;
             text-shadow: 0 0 15px rgba(255, 128, 171, 0.9), 
@@ -131,7 +181,7 @@ user-select:none;
             max-width: 85%;
         }
 
-        /* 5. VẬT THỂ BAY */
+        /* 5. VẬT THỂ BAY (GIỮ NGUYÊN) */
         .floating { 
             position: absolute; bottom: -180px; z-index: 1000; 
             animation: fly var(--duration) linear forwards; 
@@ -156,11 +206,13 @@ user-select:none;
     <canvas id="canvas"></canvas>
 
     <div id="overlay">
-        <div class="avatar-circle">
-            <img src="https://cdn.lala.com.vn/image/1/230224/bo-10-bong-hoa-sap-sac-do-ruc-ro2.jpg" alt="Hoa">
+        <div class="card">
+            <div class="avatar-circle">
+                <img src="https://cdn.lala.com.vn/image/1/230224/bo-10-bong-hoa-sap-sac-do-ruc-ro2.jpg" alt="Hoa">
+            </div>
+            <div class="title-card">Người đẹp có một bức thư mới...</div>
+            <button class="btn-open" onclick="openGift()">❤️ Mở ngayyy ❤️ </button>
         </div>
-        <div style="color: white; font-size: 1.5rem; margin-bottom: 30px; font-style: italic;">Người đẹp có một bức thư mới...</div>
-        <button class="btn-open" onclick="openGift()">📩 Mở quà thôi!</button>
     </div>
 
     <div id="main-content">
@@ -200,6 +252,17 @@ Anh sẽ cố gắng để em không bao giờ phải thất vọng. Yêu em!`;
         
         let spawnInterval;
 
+        // Sparkle effect for overlay
+        const overlay = document.getElementById('overlay');
+        for(let i=0; i<40; i++){
+            let s = document.createElement('div');
+            s.className = 'sparkle';
+            s.style.left = Math.random() * 100 + "%";
+            s.style.top = Math.random() * 100 + "%";
+            s.style.animationDelay = Math.random() * 3 + "s";
+            overlay.appendChild(s);
+        }
+
         function openGift() {
             document.getElementById('bgMusic').play().catch(() => {});
             initFireworks();
@@ -212,7 +275,7 @@ Anh sẽ cố gắng để em không bao giờ phải thất vọng. Yêu em!`;
                     main.style.opacity = '1';
                     setTimeout(startTyping, 800);
                 }, 100);
-                spawnInterval = setInterval(createFloating, 1000);
+                spawnInterval = setInterval(createFloating, 800);
             }, 1000);
         }
 
@@ -230,13 +293,11 @@ Anh sẽ cố gắng để em không bao giờ phải thất vọng. Yêu em!`;
                 finalScreen.style.visibility = 'visible';
                 finalScreen.style.opacity = '1';
                 
-                // TĂNG CƯỜNG ẢNH BAY
                 clearInterval(spawnInterval);
-                spawnInterval = setInterval(createFloating, 450); 
+                spawnInterval = setInterval(createFloating, 800); 
 
-                // PHÁO HOA TỐI ƯU: Bắn liên tục nhưng mỗi lần ít hạt hơn
                 for(let i=0; i<5; i++) {
-                    setTimeout(initFireworks, i * 10000  );
+                    setTimeout(initFireworks, i * 10000);
                 }
             }, 800);
         }
@@ -287,7 +348,6 @@ Anh sẽ cố gắng để em không bao giờ phải thất vọng. Yêu em!`;
             setTimeout(() => el.remove(), 7000);
         }
 
-        // --- HỆ THỐNG PHÁO HOA (60 HẠT - TỐI ƯU) ---
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -327,58 +387,16 @@ Anh sẽ cố gắng để em không bao giờ phải thất vọng. Yêu em!`;
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
+
+        // Anti-copy/Inspect scripts
+        document.addEventListener("contextmenu", e => e.preventDefault());
+        document.addEventListener("copy", e => e.preventDefault());
+        document.addEventListener("selectstart", e => e.preventDefault());
+        document.addEventListener("keydown", e => {
+            if(e.key === "F12" || (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) || (e.ctrlKey && e.key === 'u')) {
+                e.preventDefault();
+            }
+        });
     </script>
-
-    <script>
-
-/* CHẶN CHUỘT PHẢI */
-document.addEventListener("contextmenu", function(e){
-    e.preventDefault();
-});
-
-/* CHẶN COPY */
-document.addEventListener("copy", function(e){
-    e.preventDefault();
-});
-
-/* CHẶN BÔI ĐEN TEXT */
-document.addEventListener("selectstart", function(e){
-    e.preventDefault();
-});
-
-/* CHẶN PHÍM TẮT DEVTOOLS */
-document.addEventListener("keydown", function(e){
-
-    /* F12 */
-    if(e.key === "F12"){
-        e.preventDefault();
-    }
-
-    /* Ctrl + U (view source) */
-    if(e.ctrlKey && e.key.toLowerCase() === "u"){
-        e.preventDefault();
-    }
-
-    /* Ctrl + Shift + I (inspect) */
-    if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i"){
-        e.preventDefault();
-    }
-
-    /* Ctrl + Shift + J (console) */
-    if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "j"){
-        e.preventDefault();
-    }
-
-    /* Ctrl + Shift + C (inspect element) */
-    if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "c"){
-        e.preventDefault();
-    }
-
-});
-
-
-</script>
 </body>
 </html>
-
-
