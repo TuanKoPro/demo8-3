@@ -167,27 +167,46 @@
         }
 
         /* 4. MÀN HÌNH FINAL */
-        #final-screen {
+       #final-screen {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             text-align: center; width: 100%;
-            opacity: 0; visibility: hidden; transition: 2s;
+            opacity: 0; visibility: hidden; 
+            /* Không dùng transition opacity ở đây nữa vì ta sẽ dùng animation */
             z-index: 50;
         }
+
         .happy-text {
             font-family: 'Pacifico', cursive;
-            font-size: 5rem; color: #ffeb3b;
-            text-shadow: 0 0 20px #ff4081, 0 0 40px #f48fb1;
+            font-size: 5rem; 
+            color: #ff4081; /* Đổi sang màu hồng đậm */
+            text-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
             margin: 0;
+            opacity: 0;
         }
-   .sub-text {
-    font-family: 'Caveat', cursive;
-    font-size: 3rem;
-    color: #ffe082; /* Màu vàng nhạt cho ấm áp */
-    font-weight: 700;
-    margin-top: 15px;
-    
-}
+
+        .sub-text {
+            font-family: 'Caveat', cursive;
+            font-size: 3rem;
+            color: #f48fb1; /* Màu hồng nhạt hơn */
+            font-weight: 700;
+            margin-top: 15px;
+            opacity: 0;
+        }
+
+        /* Hiệu ứng xuất hiện và nhấp nháy */
+        .fade-in-blink {
+            animation: fadeInBlink 4s forwards;
+        }
+
+        @keyframes fadeInBlink {
+            0% { opacity: 0; transform: scale(0.8); }
+            20% { opacity: 0.5; }
+            40% { opacity: 0.2; }
+            60% { opacity: 0.8; }
+            80% { opacity: 0.4; }
+            100% { opacity: 1; transform: scale(1); }
+        }
 
         /* 5. VẬT THỂ BAY */
         .floating { position: absolute; bottom: -150px; z-index: 1000; animation: fly var(--duration) linear forwards; }
@@ -265,7 +284,7 @@ Anh sẽ cố gắng để em không bao giờ phải thất vọng. Yêu em!`;
             }, 1000);
         }
 
-        function closeLetter() {
+       function closeLetter() {
             const letter = document.getElementById('letter');
             const finalScreen = document.getElementById('final-screen');
             const arrow = document.getElementById('guide-arrow');
@@ -278,6 +297,13 @@ Anh sẽ cố gắng để em không bao giờ phải thất vọng. Yêu em!`;
                 letter.style.display = 'none';
                 finalScreen.style.visibility = 'visible';
                 finalScreen.style.opacity = '1';
+                
+                // Thêm hiệu ứng nhấp nháy cho từng dòng chữ
+                document.querySelector('.happy-text').classList.add('fade-in-blink');
+                setTimeout(() => {
+                    document.querySelector('.sub-text').classList.add('fade-in-blink');
+                }, 1000); // Dòng dưới xuất hiện trễ hơn 1 chút cho nghệ thuật
+
                 for(let i=0; i<3; i++) setTimeout(initFireworks, i*500);
             }, 800);
         }
