@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gửi Người Yêu Anh - 8/3</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&family=Great+Vibes&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&family=Caveat:wght@700&display=swap" rel="stylesheet">
     
     <style>
+        
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             overflow: hidden; font-family: 'Arial', sans-serif;
             background-color: #0b132b;
         }
-
+        body{
+user-select:none;
+}
+        
         /* 1. MÀN HÌNH CHỜ */
         #overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -61,104 +64,46 @@
             box-sizing: border-box;
         }
 
-        /* --- SỬA LỖI CĂN LỆCH --- */
-        /* Tạo lớp bao bọc nút tắt để làm điểm neo */
         .close-wrapper {
             position: absolute; top: 10px; right: 15px;
             width: 35px; height: 35px; z-index: 102;
         }
-.close-btn {
-    width: 100%; height: 100%;
-    background: #d81b60; color: white; border-radius: 50%;
-    text-align: center; line-height: 35px;
-    font-family: Arial; font-size: 18px; cursor: pointer;
-    transition: 0.3s; font-weight: bold;
-    
-    /* Hiệu ứng nhún nhún đáng yêu */
-    animation: cuteBounce 1.5s infinite ease-in-out;
-    box-shadow: 0 0 10px rgba(216, 27, 96, 0.5);
-}
+        .close-btn {
+            width: 100%; height: 100%;
+            background: #d81b60; color: white; border-radius: 50%;
+            text-align: center; line-height: 35px;
+            font-family: Arial; font-size: 18px; cursor: pointer;
+            transition: 0.3s; font-weight: bold;
+            animation: cuteBounce 1.5s infinite ease-in-out;
+            box-shadow: 0 0 10px rgba(216, 27, 96, 0.5);
+        }
 
-.close-btn:hover { 
-    transform: scale(1.2); 
-    background: #ad1457; 
-    animation-play-state: paused; /* Dừng nhún khi di chuột vào để dễ bấm */
-}
+        @keyframes cuteBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15) translateY(2px); }
+        }
 
-/* Hiệu ứng nhún kiểu bong bóng */
-@keyframes cuteBounce {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15) translateY(2px); }
-}
-/* CON TRỎ HƯỚNG DẪN NHÚN NHẢY */
-/* CON TRỎ HƯỚNG DẪN NHÚN NHẢY */
-#guide-arrow {
-    position: absolute; 
-    top: -75px; /* Điều chỉnh lại vị trí cho vừa mắt */
-    right: -43px; 
-    width: 120px;
-    color: #d81b60;
-    opacity: 0; 
-    transition: 0.5s;
-    pointer-events: none;
-    z-index: 103;
-    display: flex; 
-    flex-direction: column; 
-    align-items: center;
-}
+        #guide-arrow {
+            position: absolute; top: -75px; right: -43px; width: 120px;
+            color: #d81b60; opacity: 0; transition: 0.5s;
+            pointer-events: none; z-index: 103;
+            display: flex; flex-direction: column; align-items: center;
+        }
 
-#guide-arrow span { 
-    font-family: 'Arial'; 
-    font-size: 12px; 
-    font-weight: bold; 
-    background: #ffeb3b;
-    padding: 3px 10px;
-    border-radius: 20px; /* Bo tròn hơn cho cute */
-    margin-bottom: 2px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    border: 1.5px solid #f06292;
-}
+        #guide-arrow span { 
+            font-family: 'Arial'; font-size: 13px; font-weight: bold; 
+            background: #ffeb3b; padding: 3px 10px; border-radius: 20px;
+            margin-bottom: 2px; border: 1.5px solid #f06292;
+        }
 
-.icon-anim {
-    font-size: 30px;
-    /* Hiệu ứng nhún nhảy kiểu lò xo */
-    animation: superBounce 1.2s infinite;
-    display: inline-block;
-}
+        .icon-anim { font-size: 30px; animation: superBounce 1.2s infinite; }
 
-/* Keyframes nhún nhảy sinh động hơn */
-@keyframes superBounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(15px) scaleY(0.8) scaleX(1.1); /* Hơi bẹt ra khi nhún xuống */
-    }
-    60% {
-        transform: translateY(7px) scaleY(1.1); /* Hơi giãn ra khi nảy lên */
-    }
-}
-#guide-arrow span { 
-    font-family: 'Arial'; 
-    font-size: 13px; 
-    font-weight: bold; 
-    background: #ffeb3b; /* Thêm nền vàng cho nổi bật */
-    padding: 2px 8px;
-    border-radius: 10px;
-    margin-bottom: 5px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-}
+        @keyframes superBounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(15px) scaleY(0.8) scaleX(1.1); }
+            60% { transform: translateY(7px) scaleY(1.1); }
+        }
 
-.icon-anim {
-    font-size: 25px;
-    animation: bounceDown 0.8s infinite alternate; /* Hiệu ứng nhún nhảy */
-}
-
-/* Hiệu ứng nhún nhảy từ trên xuống */
-@keyframes bounceDown {
-    from { transform: translateY(0); }
-    to { transform: translateY(15px); }
-}
         #type-text { font-size: 1.6rem; line-height: 1.4; color: #444; white-space: pre-line; }
 
         .signature {
@@ -167,56 +112,42 @@
         }
 
         /* 4. MÀN HÌNH FINAL */
-       #final-screen {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center; width: 100%;
-            opacity: 0; visibility: hidden; 
-            /* Không dùng transition opacity ở đây nữa vì ta sẽ dùng animation */
-            z-index: 50;
+        #final-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            visibility: hidden; z-index: 100;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 2.5s ease;
         }
-
-        .happy-text {
-            font-family: 'Pacifico', cursive;
-            font-size: 5rem; 
-            color: #ff4081; /* Đổi sang màu hồng đậm */
-            text-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
-            margin: 0;
-            opacity: 0;
-        }
-
+        
         .sub-text {
             font-family: 'Caveat', cursive;
-            font-size: 3rem;
-            color: #f48fb1; /* Màu hồng nhạt hơn */
+            font-size: 3.5rem;
+            color: #ff80ab; /* MÀU HỒNG */
             font-weight: 700;
-            margin-top: 15px;
-            opacity: 0;
-        }
-
-        /* Hiệu ứng xuất hiện và nhấp nháy */
-        .fade-in-blink {
-            animation: fadeInBlink 4s forwards;
-        }
-
-        @keyframes fadeInBlink {
-            0% { opacity: 0; transform: scale(0.8); }
-            20% { opacity: 0.5; }
-            40% { opacity: 0.2; }
-            60% { opacity: 0.8; }
-            80% { opacity: 0.4; }
-            100% { opacity: 1; transform: scale(1); }
+            text-align: center;
+            text-shadow: 0 0 15px rgba(255, 128, 171, 0.9), 
+                         0 0 30px rgba(255, 128, 171, 0.5);
+            padding: 0 20px;
+            max-width: 85%;
         }
 
         /* 5. VẬT THỂ BAY */
-        .floating { position: absolute; bottom: -150px; z-index: 1000; animation: fly var(--duration) linear forwards; }
-        .img-item { width: 120px; height: 120px; object-fit: cover; border-radius: 15px; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .heart-item { color: #ff4d6d; font-size: 30px; }
+        .floating { 
+            position: absolute; bottom: -180px; z-index: 1000; 
+            animation: fly var(--duration) linear forwards; 
+            will-change: transform;
+        }
+        .img-item { 
+            width: 140px; height: 140px; object-fit: cover; 
+            border-radius: 15px; border: 5px solid white; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4); 
+        }
+        .heart-item { color: #ff4d6d; font-size: 40px; text-shadow: 0 0 10px white; }
 
         @keyframes fly {
             0% { transform: translateY(0) rotate(var(--rot)); left: var(--left); opacity: 0; }
             10% { opacity: 1; }
-            100% { transform: translateY(-120vh) rotate(calc(var(--rot) + 60deg)); left: var(--left); opacity: 0; }
+            100% { transform: translateY(-130vh) rotate(calc(var(--rot) + 80deg)); left: var(--left); opacity: 0; }
         }
     </style>
 </head>
@@ -236,10 +167,10 @@
         <div class="letter-bg" id="letter">
             <div class="close-wrapper">
                 <div class="close-btn" onclick="closeLetter()">X</div>
-               <div id="guide-arrow">
-    <span>Tắt thư </span>
-    <div class="icon-anim">❤️</div>
- </div>
+                <div id="guide-arrow">
+                    <span>Tắt thư </span>
+                    <div class="icon-anim">❤️</div>
+                </div>
             </div>
             
             <div id="type-text"></div>
@@ -247,7 +178,6 @@
         </div>
 
         <div id="final-screen">
-            <h1 class="happy-text">Happy Women's Day!</h1>
             <div class="sub-text">Mãi xinh đẹp và hạnh phúc nhé Công chúa của anh 🌸</div>
         </div>
     </div>
@@ -266,7 +196,9 @@ Cảm ơn em đã tin tưởng và sát cánh bên anh. Mong em luôn giữ đư
 Anh sẽ cố gắng để em không bao giờ phải thất vọng. Yêu em!`;
 
         const photos = ['aza.jpg', 'aza1.jpg', 'aza2.jpg','aza3.jpg', 'aza4.jpg', 'aza5.jpg','aza6.jpg']; 
-        const hearts = ['❤️', '💖', '💗', '🌸', '✨'];
+        const hearts = ['❤️', '💖', '💗', '🌸', '✨', '🌹'];
+        
+        let spawnInterval;
 
         function openGift() {
             document.getElementById('bgMusic').play().catch(() => {});
@@ -280,31 +212,32 @@ Anh sẽ cố gắng để em không bao giờ phải thất vọng. Yêu em!`;
                     main.style.opacity = '1';
                     setTimeout(startTyping, 800);
                 }, 100);
-                setInterval(createFloating, 800);
+                spawnInterval = setInterval(createFloating, 800);
             }, 1000);
         }
 
-       function closeLetter() {
+        function closeLetter() {
             const letter = document.getElementById('letter');
             const finalScreen = document.getElementById('final-screen');
             const arrow = document.getElementById('guide-arrow');
             
             arrow.style.display = 'none';
             letter.style.opacity = '0';
-            letter.style.transform = 'scale(0.5) rotate(10deg)';
+            letter.style.transform = 'scale(0.5) rotate(15deg)';
             
             setTimeout(() => {
                 letter.style.display = 'none';
                 finalScreen.style.visibility = 'visible';
                 finalScreen.style.opacity = '1';
                 
-                // Thêm hiệu ứng nhấp nháy cho từng dòng chữ
-                document.querySelector('.happy-text').classList.add('fade-in-blink');
-                setTimeout(() => {
-                    document.querySelector('.sub-text').classList.add('fade-in-blink');
-                }, 1000); // Dòng dưới xuất hiện trễ hơn 1 chút cho nghệ thuật
+                // TĂNG CƯỜNG ẢNH BAY
+                clearInterval(spawnInterval);
+                spawnInterval = setInterval(createFloating, 250); 
 
-                for(let i=0; i<3; i++) setTimeout(initFireworks, i*500);
+                // PHÁO HOA TỐI ƯU: Bắn liên tục nhưng mỗi lần ít hạt hơn
+                for(let i=0; i<5; i++) {
+                    setTimeout(initFireworks, i * 10000  );
+                }
             }, 800);
         }
 
@@ -329,20 +262,48 @@ Anh sẽ cố gắng để em không bao giờ phải thất vọng. Yêu em!`;
             type();
         }
 
-        // --- PHÁO HOA --- (Giữ nguyên logic của bạn)
+        function createFloating() {
+            const isHeart = Math.random() < 0.35;
+            const el = document.createElement(isHeart ? 'div' : 'img');
+            el.className = 'floating ' + (isHeart ? 'heart-item' : 'img-item');
+            
+            if(isHeart) {
+                el.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            } else {
+                el.src = photos[Math.floor(Math.random() * photos.length)];
+                el.onerror = function() {
+                    this.outerHTML = `<div class="floating heart-item" style="--left:${this.style.getPropertyValue('--left')}; --duration:${this.style.getPropertyValue('--duration')}; --rot:${this.style.getPropertyValue('--rot')}">💖</div>`;
+                };
+            }
+
+            const left = Math.random() * 90 + '%';
+            const duration = (Math.random() * 3 + 4) + 's'; 
+            
+            el.style.setProperty('--left', left);
+            el.style.setProperty('--duration', duration);
+            el.style.setProperty('--rot', (Math.random() * 80 - 40) + 'deg');
+            
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 7000);
+        }
+
+        // --- HỆ THỐNG PHÁO HOA (60 HẠT - TỐI ƯU) ---
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
+
         function initFireworks() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            for (let i = 0; i < 70; i++) {
+            for (let i = 0; i < 60; i++) {
                 particles.push({
-                    x: Math.random() * canvas.width, y: canvas.height,
-                    size: Math.random() * 15 + 10,
-                    velX: (Math.random() - 0.5) * 10,
-                    velY: (Math.random() * -15) - 5,
-                    opacity: 1
+                    x: Math.random() * canvas.width, 
+                    y: canvas.height,
+                    size: Math.random() * 18 + 10,
+                    velX: (Math.random() - 0.5) * 14,
+                    velY: (Math.random() * -18) - 7,
+                    opacity: 1,
+                    color: hearts[Math.floor(Math.random() * hearts.length)]
                 });
             }
         }
@@ -350,30 +311,85 @@ Anh sẽ cố gắng để em không bao giờ phải thất vọng. Yêu em!`;
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach((p, i) => {
-                p.x += p.velX; p.y += p.velY; p.velY += 0.1; p.opacity -= 0.01;
+                p.x += p.velX; p.y += p.velY; 
+                p.velY += 0.12;
+                p.opacity -= 0.01;
                 ctx.globalAlpha = p.opacity;
                 ctx.font = p.size + 'px serif';
-                ctx.fillText('❤️', p.x, p.y);
+                ctx.fillText(p.color, p.x, p.y);
                 if (p.opacity <= 0) particles.splice(i, 1);
             });
             requestAnimationFrame(draw);
         }
         draw();
-
-        function createFloating() {
-            const isHeart = Math.random() < 0.5;
-            const el = document.createElement(isHeart ? 'div' : 'img');
-            el.className = 'floating ' + (isHeart ? 'heart-item' : 'img-item');
-            if(isHeart) el.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
-            else el.src = photos[Math.floor(Math.random() * photos.length)];
-            const left = Math.random() * 95 + '%';
-            const duration = (Math.random() * 5 + 7) + 's';
-            el.style.setProperty('--left', left);
-            el.style.setProperty('--duration', duration);
-            el.style.setProperty('--rot', (Math.random() * 60 - 30) + 'deg');
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 10000);
-        }
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
+
+    <script>
+
+/* CHẶN CHUỘT PHẢI */
+document.addEventListener("contextmenu", function(e){
+    e.preventDefault();
+});
+
+/* CHẶN COPY */
+document.addEventListener("copy", function(e){
+    e.preventDefault();
+});
+
+/* CHẶN BÔI ĐEN TEXT */
+document.addEventListener("selectstart", function(e){
+    e.preventDefault();
+});
+
+/* CHẶN PHÍM TẮT DEVTOOLS */
+document.addEventListener("keydown", function(e){
+
+    /* F12 */
+    if(e.key === "F12"){
+        e.preventDefault();
+    }
+
+    /* Ctrl + U (view source) */
+    if(e.ctrlKey && e.key.toLowerCase() === "u"){
+        e.preventDefault();
+    }
+
+    /* Ctrl + Shift + I (inspect) */
+    if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i"){
+        e.preventDefault();
+    }
+
+    /* Ctrl + Shift + J (console) */
+    if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "j"){
+        e.preventDefault();
+    }
+
+    /* Ctrl + Shift + C (inspect element) */
+    if(e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "c"){
+        e.preventDefault();
+    }
+
+});
+
+/* PHÁT HIỆN MỞ DEVTOOLS */
+setInterval(function(){
+
+    const devtoolsOpen =
+        window.outerWidth - window.innerWidth > 160 ||
+        window.outerHeight - window.innerHeight > 160;
+
+    if(devtoolsOpen){
+        document.body.innerHTML =
+        "<h1 style='color:white;text-align:center;margin-top:20%;font-family:sans-serif'>Không được xem code 😝</h1>";
+    }
+
+},1000);
+
+</script>
 </body>
-</html> 
+</html>
