@@ -376,19 +376,6 @@ document.addEventListener("keydown", function(e){
 
 });
 
-/* PHÁT HIỆN MỞ DEVTOOLS */
-setInterval(function(){
-
-    const devtoolsOpen =
-        window.outerWidth - window.innerWidth > 160 ||
-        window.outerHeight - window.innerHeight > 160;
-
-    if(devtoolsOpen){
-        document.body.innerHTML =
-        "<h1 style='color:white;text-align:center;margin-top:20%;font-family:sans-serif'>Không được xem code 😝</h1>";
-    }
-
-},1000);
 
 </script>
 </body>
